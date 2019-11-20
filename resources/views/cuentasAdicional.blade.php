@@ -191,7 +191,7 @@
                       <th>Fecha Pago</th>
                       <th>Monto</th>
                       <th>Estado</th>
-                      <th>Ventas Asociadas</th>
+                      <th>Opciones</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -200,7 +200,7 @@
                       <th>Fecha Pago</th>
                       <th>Monto</th>
                       <th>Estado</th>
-                      <th>Ventas Asociadas</th>
+                      <th>Opciones</th>
                     </tr>
                   </tfoot>
                   <tbody id="tBodyDeudas">
@@ -505,7 +505,7 @@
           
           <div class="row ">
             <div class="form-group  col-7 ">
-              Deuda total: &nbsp;$<label id="labelDeudaTotal">$00000 </label> &nbsp;
+              <label id="labelDeudaText">Deuda total:</label> &nbsp;$<label id="labelDeudaTotal">$00000 </label> &nbsp;
               <input type="number" class="form-control numberPositivo abono col-7" min="10" max="6000" id="abono" name="abono" placeholder="$ Monto Abono" required>
             </div>
             <div class="form-group  col-5">

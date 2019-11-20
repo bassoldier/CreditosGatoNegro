@@ -139,6 +139,7 @@ class ClienteController extends Controller
         }
         foreach ($clientes as $cliente) {
             return response()->json([
+            'idCliente'=>$id,
             'rutCliente'=>$cliente->rutCliente,
             'nombreCliente'=>$cliente->nombreCliente,
             'apellidoPatCliente'=>$cliente->apellidoPatCliente,
@@ -156,6 +157,41 @@ class ClienteController extends Controller
         }
 
         
+    }
+
+    public function showClientePorDeuda($id, $idDeuda)
+    {
+        $clientes = DB::table('clientes')->where('idCliente', $id)->get();
+        $deuda = DeudaMensual::find($idDeuda);
+
+        $deudaMensual = DB::table('deuda_mensual')->where('montoDeudaMensual','>',0)->where('idCliente', $id)->get();
+        if($deudaMensual->isEmpty()){
+            $classFecha = "editableDet";
+            $classLabel = "Not";
+        }else{
+            $classFecha = "Not";
+            $classLabel = "avisador";
+        }
+        foreach ($clientes as $cliente) {
+            return response()->json([
+            'idCliente'=>$id,
+            'rutCliente'=>$cliente->rutCliente,
+            'nombreCliente'=>$cliente->nombreCliente,
+            'apellidoPatCliente'=>$cliente->apellidoPatCliente,
+            'apellidoMatCliente'=>$cliente->apellidoMatCliente,
+            'correoCliente'=>$cliente->correoCliente,
+            'telefonoCliente'=>$cliente->telefonoCliente,
+            'direccionCliente'=>$cliente->direccionCliente,
+            'recomendadoPorCliente'=>$cliente->rutRecomendadoCliente,
+            'fechaPagoCliente'=>$cliente->fechaPagoCliente,
+            'fechaFacturacionCliente'=>$cliente->fechaFacturacionCliente,
+            'deudaCliente'=>$cliente->deudaTotalCliente,
+            'classFecha' => $classFecha,
+            'classLabel' => $classLabel,
+            'montoDeudaMensual' => $deuda->montoDeudaMensual
+        ]);
+        }
+
     }
 
 

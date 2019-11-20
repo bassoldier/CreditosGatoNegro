@@ -1,4 +1,5 @@
 
+
 $(document).ready(function() {
 
   $('.switchMora').click(function() {
@@ -150,6 +151,10 @@ $(document).ready(function() {
                                 '<a href="#" id="'+data[i].idDeudaMensual+'" class="btn btn-info btn-circle btn-sm botonDetalleDeuda" data-target="#detallesCuentaVentasModal" data-toggle="modal">'+
                                   '<i class="fas fa-search"></i>'+
                                 '</a>'+
+                                '<a href="#" id="'+data[i].idDeudaMensual+'" name="'+id+'" class="btn btn-success btn-circle btn-sm botonDetalleDeudaAbono" data-target="#abonoCuentaModal" data-toggle="modal">'+
+                                  '<i class="fas fa-dollar-sign"></i>'+
+                                '</a>'+
+  
                               '</td>'+
                             '</tr>';
 
@@ -376,6 +381,7 @@ $(document).ready(function() {
        .done(function( data, textStatus, jqXHR ) {
             if ( console && console.log ) {
               $('#abonosTitle').text('Abonos: ' + data.nombreCliente + " " + data.apellidoPatCliente + " " + data.apellidoMatCliente);
+              $('#labelDeudaText').text("Deuda Total:");
               $('#labelDeudaTotal').text(formatNumber(data.deudaCliente));
               $('.abono').attr({"max" : data.deudaCliente, "min" : 10 });
            }
@@ -477,4 +483,95 @@ $(document).ready(function() {
         $('#formularioAbono').trigger("reset");
   });
 
+    //ABRE EL MODAL DE ABONOS DESDE LAS DEUDAS MENSUALES
+
+  $(document).on('click','.botonDetalleDeudaAbono',function(){
+      let idDeudaMensual = this.id;
+      let id= $('#'+idDeudaMensual+".botonDetalleDeudaAbono").attr('name');
+    console.log("Ide del cliente:" + id);
+    $(".abono").removeAttr("id");
+    $(".abono").attr("id",id);
+    $("#auxIdCliente").val(id);
+
+    $.ajax({
+          // En data puedes utilizar un objeto JSON, un array o un query string
+          //Cambiar a type: POST si necesario
+          type: "GET",
+          // Formato de datos que se espera en la respuesta
+          dataType: "json",
+          // URL a la que se enviará la solicitud Ajax
+          url:  "showClientePorDeuda/" + id + "/"+ idDeudaMensual,
+      })
+       .done(function( data, textStatus, jqXHR ) {
+            if ( console && console.log ) {
+
+
+              $('#abonosTitle').text('Abonos: ' + data.nombreCliente + " " + data.apellidoPatCliente + " " + data.apellidoMatCliente);
+              $('#labelDeudaText').text("Deuda Mes:");
+              $('#labelDeudaTotal').text(formatNumber(data.montoDeudaMensual));
+              $('.abono').attr({"max" : data.deudaCliente, "min" : 10 });
+           }
+       })
+       .fail(function( jqXHR, textStatus, errorThrown ) {
+           if ( console && console.log ) {
+               console.log( "La solicitud a fallado: " +  textStatus);
+
+           }
+      });
+
+    $.ajax({
+          // En data puedes utilizar un objeto JSON, un array o un query string
+          //Cambiar a type: POST si necesario
+          type: "GET",
+          // Formato de datos que se espera en la respuesta
+          dataType: "json",
+          // URL a la que se enviará la solicitud Ajax
+          url:  "showAbonoCuenta/" + id,
+      })
+       .done(function( data, textStatus, jqXHR ) {
+            var newElement;
+            if ( console && console.log ) {
+              
+              if($.isEmptyObject(data)){
+                newElem='<div class="alert alert-success" id="nohayAbonos">"No hay pagos para mostrar"</div>';
+                $('#tBodyAbonos').html(newElem);
+              }
+              else{
+                $.each(data, function(i,item){
+                  newElem = '<tr>' + 
+                              '<td> $'+data[i].montoAbono+'</td>' +
+                              '<td>'+data[i].fechaAbono+'</td>' +
+                              '<td><a href="imprimirAbono/'+data[i].idAbono+'" id="'+data[i].idAbono+'" class="btn btn-info btn-circle btn-sm">'+
+                                  '<i class="fas fa-print"></i>'+
+                                '</a></td>'+     
+                            '</tr>';
+
+                  //newElem = '<div class="input-group mb-3 divProductos" id="divProducto'+data[i].idProducto+'"><input type="text" class="form-control textoProducto" id="textoProducto'+data[i].idProducto+'" placeholder="'+data[i].nombreProducto+'" aria-label="Recipient\'s username" aria-describedby="basic-addon2" readonly><div class="input-group-append"><a type="button" id="'+data[i].idProducto+'"  class="btn btn-danger btn-icon-split eliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-times"></i></span></a><a type="button" id="'+data[i].idProducto+'"  class="btn-warning btn-icon-split backEliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-arrow-left"></i></span></a></div></div>';
+                  if(i==0){
+                    $('#tBodyAbonos').html(newElem);
+                  }
+                  else{
+                    $('#tBodyAbonos').append(newElem);
+                  }
+                  
+                })
+              }
+           }
+       })
+       .fail(function( jqXHR, textStatus, errorThrown ) {
+           if ( console && console.log ) {
+               console.log( "La solicitud a fallado: " +  textStatus);
+
+           }
+      });
+
+    
+  });
+
 });
+
+
+
+
+
+ 

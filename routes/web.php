@@ -37,6 +37,8 @@ Route::get('showVenta/{id}', 'VentaController@show');
 Route::get('showProducto/{id}', 'ProductoController@show');
 Route::get('showDeudaMensual/{id}', 'DeudaMensualController@show');
 
+Route::get('showClientePorDeuda/{id}/{idDeuda}', 'ClienteController@showClientePorDeuda');
+
 Route::post('updateCliente/{id}', 'ClienteController@update');
 Route::post('updateVendedor/{id}', 'VendedorController@update');
 Route::post('updateAdicional/{id}', 'AdicionalController@update');

@@ -719,7 +719,7 @@ $html=" <html lang='es'>
 
         $ruta=asset('tempPDF/abono.pdf');
         echo $ruta;
-        $mpdf=new mPDF(['mode' => 'utf-8', 'format' => 'A4-L']);
+        $mpdf=new mPDF(['default_font_size'=> '0', 'format' => 'Letter-L', 'margin_left' => '160', 'margin_right' => '-110', 'margin_top' => '0', 'margin_bottom' => '20', 'margin_header' => '5', 'margin_footer' => '0', 'orientation' => 'L']);
         $mpdf->SetJS('this.print();');
         $mpdf->WriteHTML($html);
         $mpdf->Output('../public/tempPDF/abono.pdf','F');

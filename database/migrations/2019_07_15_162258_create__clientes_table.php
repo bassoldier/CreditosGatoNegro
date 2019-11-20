@@ -22,7 +22,7 @@ class CreateClientesTable extends Migration
             $table->string('telefonoCliente');
             $table->string('correoCliente')->nullable();
             $table->string('direccionCliente');
-            $table->string('rutRecomendadoCliente');
+            $table->string('rutRecomendadoCliente')->nullable();
             $table->date('fechaPagoCliente');
             $table->date('fechaFacturacionCliente');
             $table->integer('deudaTotalCliente');
