@@ -148,8 +148,8 @@ $(document).ready(function() {
                               '</td>'+
                             
                               '<td>' +
-                                '<a href="#" id="'+data[i].idDeudaMensual+'" class="btn btn-info btn-circle btn-sm botonDetalleDeuda" data-target="#detallesCuentaVentasModal" data-toggle="modal">'+
-                                  '<i class="fas fa-search"></i>'+
+                                '<a href="#" id="'+data[i].idDeudaMensual+'" class="btn btn-warning btn-circle btn-sm botonDetalleDeuda" data-target="#detallesCuentaVentasModal" data-toggle="modal">'+
+                                  '<i class="fas fa-dollar-sign"></i>'+
                                 '</a>'+
                                 '<a href="#" id="'+data[i].idDeudaMensual+'" name="'+id+'" class="btn btn-success btn-circle btn-sm botonDetalleDeudaAbono" data-target="#abonoCuentaModal" data-toggle="modal">'+
                                   '<i class="fas fa-dollar-sign"></i>'+
@@ -212,7 +212,7 @@ $(document).ready(function() {
           // Formato de datos que se espera en la respuesta
           dataType: "json",
           // URL a la que se enviará la solicitud Ajax
-          url:  "showCuentaVentas/" + id,
+          url:  "showCuentaVentas2/" + id,
       })
        .done(function( data, textStatus, jqXHR ) {
             var newElement;
@@ -223,15 +223,21 @@ $(document).ready(function() {
                 $('#tBodyVentas').html(newElem);
               }
               else{
-                $.each(data, function(i,item){
 
-                  if(parseInt(data[i].estadoVenta) == 0){
+                $.each(data, function(i,item){
+                  if(i==0){
+
+                  }else{
+                    if(parseInt(data[i].estadoVenta) == 0){
                     var casilla='<a href="#" class="btn btn-success btn-circle btn-sm disabled">'+
                                   '<i class="fas fa-check-circle"></i>'+
                                 '</a>';
 
                     var casilla2='<a href="#" id="'+data[i].idVenta+'" class="btn btn-info btn-circle btn-sm botonDetalleVenta" data-target="#detallesVentaModal" data-toggle="modal">'+
                                   '<i class="fas fa-search"></i>'+
+                                '</a>'+
+                                '<a href="#" id="'+data[i].idCliente+'" name="'+id+'" class="btn btn-success btn-circle btn-sm botonAbonoCuenta" data-target="#abonoCuentaModal" data-toggle="modal">'+
+                                  '<i class="fas fa-dollar-sign"></i>'+
                                 '</a>'+
                                 '<a href="#" id="'+data[i].idVenta+'" class="btn btn-danger btn-circle btn-sm botonEliminarVenta" data-target="#eliminarVentaModal" data-toggle="modal">'+
                                   '<i class="fas fa-trash"></i>'+
@@ -249,7 +255,7 @@ $(document).ready(function() {
                               '<td>'+data[i].fechaHoraVenta+'</td>' +
                               '<td>'+data[i].numeroBoletaVenta+'</td>' +
                               '<td>$'+data[i].montoPostInteresVenta+'</td>'+
-                              '<td>'+data[i].nombreVendedor+" "+data[i].apellidoPatVendedor+" "+data[i].apellidoMatVendedor+'</td>'+
+                              '<td>'+data[i].nombreCliente+'</td>'+
                               '<td>' +
                                 casilla +
                               '</td>'+
@@ -260,12 +266,15 @@ $(document).ready(function() {
                             '</tr>';
 
                   //newElem = '<div class="input-group mb-3 divProductos" id="divProducto'+data[i].idProducto+'"><input type="text" class="form-control textoProducto" id="textoProducto'+data[i].idProducto+'" placeholder="'+data[i].nombreProducto+'" aria-label="Recipient\'s username" aria-describedby="basic-addon2" readonly><div class="input-group-append"><a type="button" id="'+data[i].idProducto+'"  class="btn btn-danger btn-icon-split eliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-times"></i></span></a><a type="button" id="'+data[i].idProducto+'"  class="btn-warning btn-icon-split backEliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-arrow-left"></i></span></a></div></div>';
-                  if(i==0){
+                  if(i==1){
                     $('#tBodyVentas').html(newElem);
                   }
                   else{
                     $('#tBodyVentas').append(newElem);
                   }
+                  }
+
+                  
                   
                 })
               }
@@ -303,7 +312,9 @@ $(document).ready(function() {
               }
               else{
                 $.each(data, function(i,item){
+                   if(i==0){
 
+                  }else{
                   if(parseInt(data[i].estadoVenta) == 0){
                     var casilla='<a href="#" class="btn btn-success btn-circle btn-sm disabled">'+
                                   '<i class="fas fa-check-circle"></i>'+
@@ -311,6 +322,9 @@ $(document).ready(function() {
 
                     var casilla2='<a href="#" id="'+data[i].idVenta+'" class="btn btn-info btn-circle btn-sm botonDetalleVenta" data-target="#detallesVentaModal" data-toggle="modal">'+
                                   '<i class="fas fa-search"></i>'+
+                                '</a>'+
+                                '<a href="#" id="'+data[i].idCliente+'" name="'+id+'" class="btn btn-success btn-circle btn-sm botonAbonoCuenta" data-target="#abonoCuentaModal" data-toggle="modal">'+
+                                  '<i class="fas fa-dollar-sign"></i>'+
                                 '</a>'+
                                 '<a href="#" id="'+data[i].idVenta+'" class="btn btn-danger btn-circle btn-sm botonEliminarVenta" data-target="#eliminarVentaModal" data-toggle="modal">'+
                                   '<i class="fas fa-trash"></i>'+
@@ -328,7 +342,7 @@ $(document).ready(function() {
                               '<td>'+data[i].fechaHoraVenta+'</td>' +
                               '<td>'+data[i].numeroBoletaVenta+'</td>' +
                               '<td>$'+data[i].montoPostInteresVenta+'</td>'+
-                              '<td>'+data[i].nombreVendedor+" "+data[i].apellidoPatVendedor+" "+data[i].apellidoMatVendedor+'</td>'+
+                              '<td>'+data[i].nombreCliente+'</td>'+
                               '<td>' +
                                 casilla +
                               '</td>'+
@@ -339,12 +353,13 @@ $(document).ready(function() {
                             '</tr>';
 
                   //newElem = '<div class="input-group mb-3 divProductos" id="divProducto'+data[i].idProducto+'"><input type="text" class="form-control textoProducto" id="textoProducto'+data[i].idProducto+'" placeholder="'+data[i].nombreProducto+'" aria-label="Recipient\'s username" aria-describedby="basic-addon2" readonly><div class="input-group-append"><a type="button" id="'+data[i].idProducto+'"  class="btn btn-danger btn-icon-split eliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-times"></i></span></a><a type="button" id="'+data[i].idProducto+'"  class="btn-warning btn-icon-split backEliminaProducto" style="display:none;"><span class="icon text-white-50"><i class="fas fa-arrow-left"></i></span></a></div></div>';
-                  if(i==0){
+                  if(i==1){
                     $('#tBodyVentas').html(newElem);
                   }
                   else{
                     $('#tBodyVentas').append(newElem);
                   }
+                }
                   
                 })
               }

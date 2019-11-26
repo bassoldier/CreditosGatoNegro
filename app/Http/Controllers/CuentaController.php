@@ -337,12 +337,134 @@ class CuentaController extends Controller
         return response()->json($ventas);
     }
 
+    public function showCuentaVentas2($id)
+    {
+        $ventas = DB::table('ventas')->join('clientes', 'ventas.idCliente', '=', 'clientes.idCliente')->join('vendedores', 'ventas.idvendedor', '=', 'vendedores.idvendedor')->where('ventas.idCliente',$id)->orderBy('fechaHoraVenta', 'DESC')->get();
+        if(!$ventas->isNotEmpty()){
+            return response()->json($ventas);  
+        }
+
+        $ventasArray[]=array();
+
+        $idArray=1;
+
+        foreach ($ventas as $venta) {
+            
+            $recibe = DB::table('recibe')->join('adicionales', 'recibe.idAdicional', '=', 'adicionales.idAdicional')->where('idVenta', $venta->idVenta)->first();
+            if($recibe){
+                $rutCliente= $recibe->rutAdicional;
+                $nombreCliente=$recibe->nombreAdicional." ".$recibe->apellidoPatAdicional." ".$recibe->apellidoMatAdicional;
+                
+            }else{
+                
+                    $rutCliente=$venta->rutCliente;
+                    $nombreCliente=$venta->nombreCliente." ".$venta->apellidoPatCliente." ".$venta->apellidoMatCliente;
+               
+            }
+
+            
+
+            $componente = array( 
+                $idArray => array(
+                    'idVenta'=>$venta->idVenta,
+                    'fechaHoraVenta'=>$venta->fechaHoraVenta,
+                    'numeroBoletaVenta'=>$venta->numeroBoletaVenta,
+                    'estadoVenta'=>$venta->estadoVenta,
+
+                    'deudaFinalVenta'=>$venta->montoPostInteresVenta,
+                    'rutVendedor'=>$venta->rutVendedor,
+
+                    'rutCliente'=>$rutCliente,
+                    'nombreCliente'=>$nombreCliente,
+                    'rutTitular'=>$venta->rutCliente,
+                    'nombreTitular'=>$venta->nombreCliente." ".$venta->apellidoPatCliente." ".$venta->apellidoMatCliente,
+
+                    'comentarioVenta'=>$venta->comentarioVenta,
+                    'montoOriginalVenta'=>$venta->montoOriginalVenta,
+                    'montoPieVenta'=>$venta->montoPieVenta,
+                    'montoPostInteresVenta'=>$venta->montoPostInteresVenta,
+                    'nCuotasVenta'=>$venta->numeroDeCuotasVenta,
+                    'factorInteresVenta'=>$venta->factorInteresVenta,
+                    'valorCuotaVenta'=>$venta->valorCuotaVenta,
+                    'fechadePago'=>$venta->fechaPagoCliente,
+                    'fechadeFacturacion'=>$venta->fechaFacturacionCliente,
+                    'estadoVenta' =>$venta->estadoVenta,
+                    'notaCredito' =>$venta->notaCreditoVenta
+                )
+            );
+
+            $ventasArray=$ventasArray+$componente;
+
+            $idArray++;
+            
+        }
+
+        return response()->json($ventasArray);
+    }
+
     public function showDeudaVentas($id)
     {
-        $ventas = DB::table('cuotas')->join('ventas', 'cuotas.idVenta', '=', 'ventas.idVenta')->join('vendedores', 'ventas.idVendedor','=', 'vendedores.idVendedor')->selectRaw('ventas.idVenta, fechaHoraVenta, numeroBoletaVenta, montoOriginalVenta, montoPostInteresVenta, montoPieVenta, numeroDeCuotasVenta, valorCuotaVenta, estadoVenta, nombreVendedor, apellidoPatVendedor, apellidoMatVendedor')->groupBy('idVenta', 'ventas.idVenta', 'fechaHoraVenta', 'numeroBoletaVenta', 'montoOriginalVenta', 'montoPostInteresVenta', 'montoPieVenta', 'numeroDeCuotasVenta', 'valorCuotaVenta', 'estadoVenta', 'nombreVendedor', 'apellidoPatVendedor', 'apellidoMatVendedor')->where('idDeudaMensual', $id)->get(); 
+        $ventas = DB::table('cuotas')->join('ventas', 'cuotas.idVenta', '=', 'ventas.idVenta')->join('vendedores', 'ventas.idVendedor','=', 'vendedores.idVendedor')->join('clientes', 'ventas.idCliente', '=', 'clientes.idCliente')->selectRaw('ventas.idVenta, fechaHoraVenta, numeroBoletaVenta, montoOriginalVenta, montoPostInteresVenta, montoPieVenta, numeroDeCuotasVenta, valorCuotaVenta, estadoVenta, nombreVendedor, apellidoPatVendedor, apellidoMatVendedor, clientes.idCliente, nombreCliente, apellidoPatCliente, apellidoMatCliente')->groupBy('idVenta', 'ventas.idVenta', 'fechaHoraVenta', 'numeroBoletaVenta', 'montoOriginalVenta', 'montoPostInteresVenta', 'montoPieVenta', 'numeroDeCuotasVenta', 'valorCuotaVenta', 'estadoVenta', 'nombreVendedor', 'apellidoPatVendedor', 'apellidoMatVendedor', 'clientes.idCliente','nombreCliente', 'apellidoPatCliente', 'apellidoMatCliente')->where('idDeudaMensual', $id)->get(); 
 
-          
-        return response()->json($ventas);
+        if(!$ventas->isNotEmpty()){
+            return response()->json($ventas);  
+        }
+         $ventasArray[]=array();
+
+        $idArray=1;
+
+        foreach ($ventas as $venta) {
+            
+            $recibe = DB::table('recibe')->join('adicionales', 'recibe.idAdicional', '=', 'adicionales.idAdicional')->where('idVenta', $venta->idVenta)->first();
+            if($recibe){
+                
+                $nombreCliente=$recibe->nombreAdicional." ".$recibe->apellidoPatAdicional." ".$recibe->apellidoMatAdicional;
+                
+            }else{
+                
+                    
+                    $nombreCliente=$venta->nombreCliente." ".$venta->apellidoPatCliente." ".$venta->apellidoMatCliente;
+               
+            }
+
+            
+
+            $componente = array( 
+                $idArray => array(
+                    'idVenta'=>$venta->idVenta,
+                    'fechaHoraVenta'=>$venta->fechaHoraVenta,
+                    'numeroBoletaVenta'=>$venta->numeroBoletaVenta,
+                    'estadoVenta'=>$venta->estadoVenta,
+
+                    'deudaFinalVenta'=>$venta->montoPostInteresVenta,
+                    
+
+                    
+                    'nombreCliente'=>$nombreCliente,
+                    
+                    'nombreTitular'=>$venta->nombreCliente." ".$venta->apellidoPatCliente." ".$venta->apellidoMatCliente,
+
+                    
+                    'montoOriginalVenta'=>$venta->montoOriginalVenta,
+                    'montoPieVenta'=>$venta->montoPieVenta,
+                    'montoPostInteresVenta'=>$venta->montoPostInteresVenta,
+                    'nCuotasVenta'=>$venta->numeroDeCuotasVenta,
+                    
+                    'valorCuotaVenta'=>$venta->valorCuotaVenta,
+                    
+                    
+                    'estadoVenta' =>$venta->estadoVenta,
+                    
+                )
+            );
+
+            $ventasArray=$ventasArray+$componente;
+
+            $idArray++;
+            
+        }
+
+        return response()->json($ventasArray);
     }
 
     public function showAbonoCuenta($id)

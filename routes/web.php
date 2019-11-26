@@ -64,6 +64,7 @@ Route::get('eliminarMora/{id}', 'CuentaController@eliminarMora');
 Route::get('cambiarBloqueoAdicional/{id}/{bloqueo}', 'AdicionalController@cambiarBloqueoAdicional');
 
 Route::get('showCuentaVentas/{id}', 'CuentaController@showCuentaVentas');
+Route::get('showCuentaVentas2/{id}', 'CuentaController@showCuentaVentas2');
 Route::get('showCuentaVentasAdicional/{id}', 'CuentaAdicionalController@showCuentaVentasAdicional');
 Route::get('showDeudaVentas/{id}', 'CuentaController@showDeudaVentas');
 Route::get('showAbonoCuenta/{id}', 'CuentaController@showAbonoCuenta');

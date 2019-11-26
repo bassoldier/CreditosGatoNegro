@@ -73,7 +73,7 @@ class InformeController extends Controller
     {
         $cliente=Cliente::where('rutCliente', $request->get('rutClienteCompra'))->first();
 
-        return Excel::download(new ComprasClienteExport([$request->get('fechaComprasClienteInicio'), $request->get('fechaComprasClienteFinano'), $request->get('rutClienteCompra')]), 'Compras_'.$cliente->nombreCliente.'_'.$cliente->apellidoPatCliente.'_'.$cliente->apellidoMatCliente.'.xlsx');
+        return Excel::download(new ComprasClienteExport([$request->get('fechaComprasClienteInicio'), $request->get('fechaComprasClienteFin'), $request->get('rutClienteCompra')]), 'Compras_'.$cliente->nombreCliente.'_'.$cliente->apellidoPatCliente.'_'.$cliente->apellidoMatCliente.'.xlsx');
     }
 
     public function getPagosClienteExcel(Request $request)

@@ -245,9 +245,9 @@
                       <th>Fecha</th>
                       <th>N° Boleta</th>
                       <th>Monto</th>
-                      <th>Vendedor</th>
+                      <th>Cliente</th>
                       <th>Estado</th>
-                      <th>Opciones</th>
+                      <th>Opciones Ventas</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -255,9 +255,9 @@
                       <th>Fecha</th>
                       <th>N° Boleta</th>
                       <th>Monto</th>
-                      <th>Vendedor</th>
+                      <th>Cliente</th>
                       <th>Estado</th>
-                      <th>Opciones</th>
+                      <th>Opciones Ventas</th>
                     </tr>
                   </tfoot>
                   <tbody id="tBodyVentas">
